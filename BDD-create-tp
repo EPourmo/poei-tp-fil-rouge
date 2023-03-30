@@ -93,8 +93,8 @@ create table Borrow (
 BorrowID int NOT NULL, 
 PersonID int NOT NULL, 
 BookID int NOT NULL, 
-BorrowDate Datetime NOT NULL,
-ReturnDate Datetime NOT NULL,
+BorrowDate Date NOT NULL,
+ReturnDate Date NOT NULL,
 constraint PK_Borrow primary key (BorrowID),
 constraint FK_Borrow_PersonID
          foreign key (PersonID) references Person (PersonID),
@@ -103,7 +103,9 @@ constraint FK_Borrow_BookID
 )
 
 insert into Borrow values 
-(1 , 3, 2, '2023-10-05 00:00:00', '2023-11-10 00:00:00'), 
-(2, 2, 1, '2023-15-01 00:00:00', '2023-16-02 00:00:00'),
-(3, 1, 3, '2023-07-10 00:00:00', '2023-18-11 00:00:00')
+(1 , 3, 2, '2023-10-05', '2023-11-10'), 
+(2, 2, 1, '2023-01-15', '2023-02-16'),
+(3, 1, 3, '2023-07-10', '2023-11-18')
 select * from Borrow
+
+--drop table Borrow
