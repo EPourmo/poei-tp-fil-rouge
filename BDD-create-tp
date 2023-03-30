@@ -1,111 +1,89 @@
-create table Domain 
-( DomainID int NOT NULL, 
-DomainName varchar(200) NOT NULL, 
-DomainDescription varchar(600) NOT NULL,
-constraint PK_Domain primary key (DomainID)
-)
-insert into Domain values 
-(1 , 'Historique', 'Du sang'), 
-(2, 'Policier', 'Meutres'),
-(3, 'Fantastique', 'Dragons et elfes')
-select * from Domain
+create database bibliotheque
 
-create table Person 
-(PersonID int NOT NULL, 
-[Name] varchar(200) NOT NULL, 
-Firstname varchar(200) NOT NULL, 
-Email varchar(200) NOT NULL, 
-Phone varchar(200) NOT NULL,
-constraint PK_Person primary key (PersonID),
-)
-insert into Person values 
-(1 , 'Lilian', 'Roumensg', 'lilian.r@gmail.com', '0948372959'), 
-(2, 'Ermane', 'Pourmo', 'armane.p@gmail.com', '0943906712'),
-(3, 'Naila', 'Bouarda', 'naila.b@gmail.com', '0409275839')
-select * from Person
 
-create table Writter 
-( WritterID int NOT NULL, 
-PersonID int NOT NULL, 
-Grade varchar(280) NOT NULL,
-constraint PK_WritterID primary key (WritterID),
-constraint FK_Writter_PersonID
-         foreign key (PersonID) references Person (PersonID)
-)
-insert into Writter values 
-(1 , 3, 'Grade1'), 
-(2, 2, 'Grade2'),
-(3, 1, 'Grade3')
-select * from Writter
+use bibliotheque
 
-create table Book 
-(BookID int NOT NULL, 
-DomainID int NOT NULL, 
-WritterID int NOT NULL, 
-Title varchar(600) NOT NULL,
-Color varchar(200), 
-pageNumb int, 
-Descrip varchar(200) NOT NULL,
-constraint PK_Book primary key (BookID),
-constraint FK_Book_DomainID
-         foreign key (DomainID) references Domain (DomainID),
-constraint FK_Book_WritterID
-         foreign key (WritterID) references Writter (WritterID)
+create table Role(
+id int primary key identity(1,1),
+nom varchar(50),
 )
-insert into Book values 
-(1 , 3, 2, 'Le livre de la jungle', 'vert', 345, 'Histoire dun jeune enfant vivant dans la jungle'), 
-(2, 2, 1, 'Au bonheur des dames', 'blanc', 456, 'Monde des grands magasins'),
-(3, 1, 3, 'Harry potter 1', 'rouge', 295, 'a lecole des sorciers')
-select * from Book
+insert into Role values 
+('Administrateur' ), 
+('Lecteur'),
+('Auteur')
+select * from Role
 
-create table Administator (
-AdministratorID int NOT NULL, 
-PersonID int NOT NULL, 
-MdpAdministrator varchar(200) NOT NULL, 
-constraint PK_Administrator primary key (AdministratorID),
-constraint FK_Person_PersonID
-         foreign key (PersonID) references Person (PersonID)
+create table Adresse(
+id int primary key identity(1,1),
+appartement varchar(50),
+rue varchar(200),
+ville varchar(50),
+zipCode varchar(5),
+pays varchar(50)
 )
 
-insert into Administator values 
-(1 , 3, 'mdpfjrbiznfi'), 
-(2, 2, 'mdpjhahsjeofe'),
-(3, 1, 'mdpjrnznjen')
-select * from Administator
+insert into Adresse values 
+('3B', 'rue MAurice Arnoux', 'Lyon', '69003', 'France'), 
+('9T', 'rue Gabriel Péri', 'Paris', '75013', 'France'),
+('4Y', 'rue Laporte', 'Toulouse', '31000', 'France')
+select * from Adresse
 
-create table Reader (
-ReaderID int NOT NULL, 
-PersonID int NOT NULL, 
-MdpReader varchar(200) NOT NULL, 
-ReaderAdress varchar(600) NOT NULL,
-constraint PK_Reader primary key (ReaderID),
-constraint FK_Reader_PersonID
-         foreign key (PersonID) references Person (PersonID)
+create table Personne(
+id int primary key identity(1,1),
+nom varchar(50),
+prenom varchar(50),
+email varchar(50),
+telephone varchar(50),
+motDePasse varchar(50),
+grade varchar(15),
+idRole int foreign key references Role(id),
+idAdresse int foreign key references Adresse(id),
 )
 
-insert into Reader values 
-(1 , 3, 'mdpjufrbfzbzefjbf', 'jfje.jffj@gmail.fr'), 
-(2, 2, 'mdpdejdejdjhdej', 'htm.fr@gmail.fr'),
-(3, 1, 'mdpjrnzozdkzjnjen', 'mog.j@gmail.fr')
-select * from Reader
+insert into Personne values 
+('Bouarda', 'Naila', 'naila.b@gmail.com', '0948372959', 'oekdzhzdj', Null, 1, 2), 
+('Roumens', 'Lilian', 'lilian.r@gmail.com','0943906712', 'kfjejdezdoef', Null, 2, 3),
+('Poumoh', 'Ermane', 'ermane.p@gmail.com', '0409275839', Null, 'Auteur3', 3, 1)
+select * from Personne
 
-create table Borrow (
-BorrowID int NOT NULL, 
-PersonID int NOT NULL, 
-BookID int NOT NULL, 
-BorrowDate Date NOT NULL,
-ReturnDate Date NOT NULL,
-constraint PK_Borrow primary key (BorrowID),
-constraint FK_Borrow_PersonID
-         foreign key (PersonID) references Person (PersonID),
-constraint FK_Borrow_BookID
-         foreign key (BookID) references Book (BookID)
+
+create table Domaine(
+id int primary key identity(1,1),
+nom varchar(50),
+description varchar(250)
+)
+insert into Domaine values 
+('Historique', 'Du sang'), 
+('Policier', 'Meutres'),
+('Fantastique', 'Dragons et elfes')
+select * from Domaine
+
+
+create table Livre(
+id int primary key identity(1,1),
+tittre varchar(80),
+nbPage int,
+idDomaine int foreign key references Domaine(id),
+idPersonne int foreign key references Personne(id),
 )
 
-insert into Borrow values 
-(1 , 3, 2, '2023-10-05', '2023-11-10'), 
-(2, 2, 1, '2023-01-15', '2023-02-16'),
-(3, 1, 3, '2023-07-10', '2023-11-18')
-select * from Borrow
+insert into Livre values 
+('Le livre de la jungle', 345, 1, 3), 
+('Au bonheur des dames', 456, 2, 3),
+('Harry potter 1', 295, 3, 3)
+select * from Livre
 
---drop table Borrow
+
+create table Emprunter(
+id int primary key identity(1,1),
+idLivre int foreign key references Livre(id),
+idLecteur int foreign key references Personne(id),
+dateEmprunt date,
+dateRetour date,
+)
+
+insert into Emprunter values 
+(3, 2, '2023-10-05', '2023-11-10'), 
+(2, 1, '2023-01-15', '2023-02-16'),
+(1, 3, '2023-07-10', '2023-11-18')
+select * from Emprunter
