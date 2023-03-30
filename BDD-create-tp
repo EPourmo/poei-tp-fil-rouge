@@ -18,6 +18,11 @@ Email varchar(200) NOT NULL,
 Phone varchar(200) NOT NULL,
 constraint PK_Person primary key (PersonID),
 )
+insert into Person values 
+(1 , 'Lilian', 'Roumensg', 'lilian.r@gmail.com', '0948372959'), 
+(2, 'Ermane', 'Pourmo', 'armane.p@gmail.com', '0943906712'),
+(3, 'Naila', 'Bouarda', 'naila.b@gmail.com', '0409275839')
+select * from Person
 
 create table Writter 
 ( WritterID int NOT NULL, 
@@ -27,6 +32,11 @@ constraint PK_WritterID primary key (WritterID),
 constraint FK_Writter_PersonID
          foreign key (PersonID) references Person (PersonID)
 )
+insert into Writter values 
+(1 , 3, 'Grade1'), 
+(2, 2, 'Grade2'),
+(3, 1, 'Grade3')
+select * from Writter
 
 create table Book 
 (BookID int NOT NULL, 
@@ -42,7 +52,11 @@ constraint FK_Book_DomainID
 constraint FK_Book_WritterID
          foreign key (WritterID) references Writter (WritterID)
 )
-
+insert into Book values 
+(1 , 3, 2, 'Le livre de la jungle', 'vert', 345, 'Histoire dun jeune enfant vivant dans la jungle'), 
+(2, 2, 1, 'Au bonheur des dames', 'blanc', 456, 'Monde des grands magasins'),
+(3, 1, 3, 'Harry potter 1', 'rouge', 295, 'a lecole des sorciers')
+select * from Book
 
 create table Administator (
 AdministratorID int NOT NULL, 
@@ -53,6 +67,11 @@ constraint FK_Person_PersonID
          foreign key (PersonID) references Person (PersonID)
 )
 
+insert into Administator values 
+(1 , 3, 'mdpfjrbiznfi'), 
+(2, 2, 'mdpjhahsjeofe'),
+(3, 1, 'mdpjrnznjen')
+select * from Administator
 
 create table Reader (
 ReaderID int NOT NULL, 
@@ -64,15 +83,27 @@ constraint FK_Reader_PersonID
          foreign key (PersonID) references Person (PersonID)
 )
 
+insert into Reader values 
+(1 , 3, 'mdpjufrbfzbzefjbf', 'jfje.jffj@gmail.fr'), 
+(2, 2, 'mdpdejdejdjhdej', 'htm.fr@gmail.fr'),
+(3, 1, 'mdpjrnzozdkzjnjen', 'mog.j@gmail.fr')
+select * from Reader
+
 create table Borrow (
 BorrowID int NOT NULL, 
 PersonID int NOT NULL, 
 BookID int NOT NULL, 
-BorrowDate Date NOT NULL,
-ReturnDate Date NOT NULL,
+BorrowDate Datetime NOT NULL,
+ReturnDate Datetime NOT NULL,
 constraint PK_Borrow primary key (BorrowID),
 constraint FK_Borrow_PersonID
          foreign key (PersonID) references Person (PersonID),
 constraint FK_Borrow_BookID
          foreign key (BookID) references Book (BookID)
 )
+
+insert into Borrow values 
+(1 , 3, 2, '2023-10-05 00:00:00', '2023-11-10 00:00:00'), 
+(2, 2, 1, '2023-15-01 00:00:00', '2023-16-02 00:00:00'),
+(3, 1, 3, '2023-07-10 00:00:00', '2023-18-11 00:00:00')
+select * from Borrow
